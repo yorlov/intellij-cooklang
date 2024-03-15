@@ -1,0 +1,16 @@
+<!-- https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>it.orlov.cooklang</id>
+    <name>Cooklang</name>
+    <vendor email="yuri.n.orlov@gmail.com" url="https://www.orlov.it">Yuri Orlov</vendor>
+    <description><![CDATA[
+      Syntax highlighting and more for your cook files.
+    ]]>
+    </description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+    </extensions>
+</idea-plugin>

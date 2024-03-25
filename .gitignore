@@ -9,4 +9,6 @@ gradlew.bat
 .run/
 out/
 
+src/main/gen/
+
 .DS_Store

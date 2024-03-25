@@ -11,6 +11,23 @@
     <depends>com.intellij.modules.platform</depends>
 
     <extensions defaultExtensionNs="com.intellij">
-
+        <fileType
+                name="Cooklang"
+                implementationClass="it.orlov.cooklang.CooklangFileType"
+                fieldName="INSTANCE"
+                language="Cooklang"
+                extensions="cook"
+        />
+        <lang.parserDefinition
+                language="Cooklang"
+                implementationClass="it.orlov.cooklang.CooklangParserDefinition"
+        />
+        <lang.syntaxHighlighterFactory
+                language="Cooklang"
+                implementationClass="it.orlov.cooklang.CooklangSyntaxHighlighterFactory"
+        />
+        <highlightVisitor
+                implementation="it.orlov.cooklang.CooklangHighlightVisitor"
+        />
     </extensions>
 </idea-plugin>

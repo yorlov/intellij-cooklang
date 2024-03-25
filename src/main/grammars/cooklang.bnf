@@ -1,0 +1,66 @@
+{
+  parserClass="it.orlov.cooklang.psi.CooklangParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Cooklang"
+  psiImplClassSuffix="Impl"
+  psiPackage="it.orlov.cooklang.psi"
+  psiImplPackage="it.orlov.cooklang.psi.impl"
+
+  elementTypeHolderClass="it.orlov.cooklang.psi.CooklangTypes"
+  elementTypeClass="it.orlov.cooklang.psi.CooklangElementType"
+  tokenTypeClass="it.orlov.cooklang.psi.CooklangTokenType"
+
+  tokens = [
+    PLAIN_WORD = "regexp:\p{Alnum}+"
+    PUNCTUATION_CHARACTER = "regexp:\p{Punct}"
+    NON_WORD_CHARACTER = "regexp:\W"
+    RIGHT_BRACE = "}"
+    LEFT_BRACE = "{"
+    PERCENT = "%"
+    AT = "@"
+    TILDE = "~"
+    SIGN = "#"
+    DOUBLE_MINUS = "--"
+    DOUBLE_GREATER = ">>"
+    COLON = ":"
+    LEFT_SQUARE_BRACKET_MINUS = "[-"
+    MINUS_RIGHT_SQUARE_BRACKET = "-]"
+  ]
+}
+
+recipe ::= (metadata | step)*
+
+metadata ::= DOUBLE_GREATER metadata_key COLON metadata_value EOL*
+metadata_key ::= text_item
+metadata_value ::= text_item
+
+step ::= (text_item | ingredient | cookware | timer | comment)+ EOL*
+
+ingredient ::= AT (multi_ingredient | single_ingredient)
+multi_ingredient ::= multi_name amount
+single_ingredient ::= single_name amount?
+
+timer ::= TILDE (multi_timer | single_timer | unnamed_timer)
+multi_timer ::= multi_name amount
+single_timer ::= single_name amount
+unnamed_timer ::= amount
+
+cookware ::= SIGN (multi_cookware | single_cookware)
+multi_cookware ::= multi_name amount
+single_cookware ::= single_name amount?
+
+amount ::= LEFT_BRACE (quantity dimension?)? RIGHT_BRACE
+dimension ::= PERCENT units
+quantity ::= text_item+
+units ::= text_item+
+
+single_name ::= PLAIN_WORD
+multi_name ::= PLAIN_WORD text_item+
+
+private text_item ::= (PLAIN_WORD | PUNCTUATION_CHARACTER | NON_WORD_CHARACTER)+
+
+comment ::= single_comment | block_comment
+single_comment ::= DOUBLE_MINUS text_item
+block_comment ::= LEFT_SQUARE_BRACKET_MINUS text_item* MINUS_RIGHT_SQUARE_BRACKET

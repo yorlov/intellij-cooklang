@@ -1,3 +1,4 @@
+import org.jetbrains.changelog.Changelog.OutputType.HTML
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -6,10 +7,10 @@ plugins {
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
     id("org.jetbrains.intellij") version "1.17.2"
     id("org.jetbrains.grammarkit") version "2022.3.2.2"
+    id("org.jetbrains.changelog") version "2.2.0"
 }
 
 group = "it.orlov.cooklang"
-version = "0.1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -18,6 +19,10 @@ repositories {
 intellij {
     version.set("IC-241-EAP-SNAPSHOT")
     updateSinceUntilBuild.set(true)
+}
+
+changelog {
+    groups.set(emptyList())
 }
 
 kotlin {
@@ -35,6 +40,17 @@ sourceSets {
 }
 
 tasks {
+    publishPlugin {
+        token.set(System.getenv("INTELLIJ_PUBLISH_TOKEN"))
+    }
+
+    patchPluginXml {
+        changeNotes.set(provider {
+            val changes = if ("${project.version}".contains("SNAPSHOT")) changelog.getUnreleased() else changelog.getLatest()
+            changelog.renderItem(changes, HTML)
+        })
+    }
+
     buildSearchableOptions {
         enabled = false
     }

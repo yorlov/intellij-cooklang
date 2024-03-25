@@ -1,0 +1,56 @@
+name: Release
+run-name: Release ${{ github.event.inputs.version }}
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        type: string
+        description: 'Addon version'
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  INTELLIJ_PUBLISH_TOKEN: ${{ secrets.INTELLIJ_PUBLISH_TOKEN }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  RELEASE_VERSION: ${{ github.event.inputs.version }}
+
+jobs:
+  release:
+    name: Release ${{ github.event.inputs.version }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          show-progress: false
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.7
+          gradle-home-cache-cleanup: true
+      - name: Set up Git
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "GitHub Actions"
+      - name: Prepare release
+        run: |
+          sed -i "/version=/ s/=.*/=$RELEASE_VERSION/" gradle.properties
+          gradle patchChangelog
+          git commit -qam "[skip ci] prepare release $RELEASE_VERSION"
+      - name: Create release
+        run: |  
+          gradle publishPlugin
+          git push origin
+          RELEASE_NOTES="$(gradle getChangelog --project-version $RELEASE_VERSION --no-header --console=plain -q)"
+          gh release create $RELEASE_VERSION --notes "$RELEASE_NOTES" ./build/distributions/*.zip
+      - name: Prepare for next development iteration
+        run: |
+          # https://stackoverflow.com/a/69489163
+          NEXT_VERSION="$(awk -vFS=. -vOFS=. '{$NF++;print}' <<< $RELEASE_VERSION)-SNAPSHOT" 
+          sed -i "/version=/ s/=.*/=$NEXT_VERSION/" gradle.properties
+          git commit -qam "[skip ci] prepare for next development iteration $NEXT_VERSION"
+          git push origin

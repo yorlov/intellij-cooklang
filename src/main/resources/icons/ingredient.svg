@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="16" height="16" viewBox="0 -0.57 79.291 79.291" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.321" y1="-7.791" x2="1.119" y2="-7.763" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#feecd2"/>
+      <stop offset="1" stop-color="#cdac82"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="0.918" y1="-6.954" x2="0.971" y2="-6.001" xlink:href="#linear-gradient"/>
+    <linearGradient id="linear-gradient-3" x1="0.9" y1="-2.491" x2="0.496" y2="-2.127" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#f9a973"/>
+      <stop offset="1" stop-color="#e28b3d"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-4" x1="1.252" y1="-9.922" x2="0.835" y2="-9.496" xlink:href="#linear-gradient"/>
+  </defs>
+  <g id="chicken_leg_food" transform="translate(-463.897 -1380.192)">
+    <path id="Path_303" d="M481.415,1400.257a8.764,8.764,0,1,1-9.168-8.342A8.764,8.764,0,0,1,481.415,1400.257Z" fill="url(#linear-gradient)"/>
+    <path id="Path_304" d="M491.166,1390.1a10.4,10.4,0,1,1-10.892-9.9A10.411,10.411,0,0,1,491.166,1390.1Z" fill="url(#linear-gradient-2)"/>
+    <path id="Path_305" d="M528.35,1413.526l-.989-.384s-6.52-3.037-19.955-4.727c-3.179-.361-6.783-.305-11.506-3.174a42.294,42.294,0,0,0-7.32,7.24c3.547,4.838,3.668,8.62,4.224,11.905a87.7,87.7,0,0,0,5.654,19.287,23.177,23.177,0,1,0,29.892-30.147Z" fill="url(#linear-gradient-3)"/>
+    <path id="Path_306" d="M487.789,1398.21a10.332,10.332,0,0,1-6.413,2.768,8.914,8.914,0,0,1-.93,3.584,40.627,40.627,0,0,1,8.134,7.919,42.294,42.294,0,0,1,7.32-7.24c.005.006.012.006.017.012A37.219,37.219,0,0,1,487.789,1398.21Z" fill="url(#linear-gradient-4)"/>
+  </g>
+</svg>

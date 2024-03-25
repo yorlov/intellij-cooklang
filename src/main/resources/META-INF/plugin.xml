@@ -29,5 +29,9 @@
         <highlightVisitor
                 implementation="it.orlov.cooklang.CooklangHighlightVisitor"
         />
+        <psi.referenceContributor
+                language="Cooklang"
+                implementation="it.orlov.cooklang.CooklangIngredientReferenceContributor"
+        />
     </extensions>
 </idea-plugin>

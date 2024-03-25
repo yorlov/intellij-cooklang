@@ -38,7 +38,10 @@ metadata_value ::= text_item
 
 step ::= (text_item | ingredient | cookware | timer | comment)+ EOL*
 
-ingredient ::= AT (multi_ingredient | single_ingredient)
+ingredient ::= AT (multi_ingredient | single_ingredient) {
+  implements="it.orlov.cooklang.psi.CooklangNamedElement"
+  mixin="it.orlov.cooklang.psi.CooklangIngredientImplMixin"
+}
 multi_ingredient ::= multi_name amount
 single_ingredient ::= single_name amount?
 

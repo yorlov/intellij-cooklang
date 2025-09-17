@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+## 0.2.0 - 2025-09-17
+
 ### Changed
 
 - Requires IntelliJ IDEA 2024.2 or later

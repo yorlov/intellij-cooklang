@@ -1,11 +1,11 @@
 import org.jetbrains.changelog.Changelog.OutputType.HTML
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.dsl.KotlinVersion.KOTLIN_1_9
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
-    id("org.jetbrains.intellij") version "1.17.2"
+    id("org.jetbrains.intellij.platform") version "2.9.0"
+    id("org.jetbrains.kotlin.jvm") version "2.2.20"
     id("org.jetbrains.grammarkit") version "2022.3.2.2"
     id("org.jetbrains.changelog") version "2.2.0"
 }
@@ -14,11 +14,28 @@ group = "it.orlov.cooklang"
 
 repositories {
     mavenCentral()
+    intellijPlatform {
+        defaultRepositories()
+    }
 }
 
-intellij {
-    version.set("IC-241-EAP-SNAPSHOT")
-    updateSinceUntilBuild.set(true)
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild.set("242")
+        }
+
+        changeNotes.set(provider {
+            val changes = if ("SNAPSHOT" in "${project.version}") changelog.getUnreleased() else changelog.getLatest()
+            changelog.renderItem(changes, HTML)
+        })
+    }
+
+    publishing {
+        token.set(System.getenv("INTELLIJ_PUBLISH_TOKEN"))
+    }
+
+    buildSearchableOptions.set(false)
 }
 
 changelog {
@@ -26,9 +43,9 @@ changelog {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
     compilerOptions {
-        jvmTarget = JVM_17
+        jvmTarget = JVM_21
         apiVersion = KOTLIN_1_9
     }
 }
@@ -40,21 +57,6 @@ sourceSets {
 }
 
 tasks {
-    publishPlugin {
-        token.set(System.getenv("INTELLIJ_PUBLISH_TOKEN"))
-    }
-
-    patchPluginXml {
-        changeNotes.set(provider {
-            val changes = if ("${project.version}".contains("SNAPSHOT")) changelog.getUnreleased() else changelog.getLatest()
-            changelog.renderItem(changes, HTML)
-        })
-    }
-
-    buildSearchableOptions {
-        enabled = false
-    }
-
     generateLexer {
         sourceFile.set(file("src/main/grammars/_CooklangLexer.flex"))
         targetOutputDir.set(file("src/main/gen/it/orlov/cooklang/lexer"))
@@ -69,5 +71,11 @@ tasks {
     }
     withType<KotlinCompile> {
         dependsOn(generateLexer, generateParser)
+    }
+}
+
+dependencies {
+    intellijPlatform {
+        intellijIdeaUltimate("LATEST-EAP-SNAPSHOT", false)
     }
 }
